@@ -7,6 +7,10 @@ variable "vpc_id" {
   default = "vpc-5ab22e31"
 }
 
+variable "subnet_id" {
+  default = ["subnet-4fc00f10", "subnet-c076848f"]
+}
+
 data "aws_ami" "amzn2" {
   most_recent = true
 
@@ -50,17 +54,38 @@ resource "aws_security_group" "allow_web" {
 
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "web-2a" {
   ami           = data.aws_ami.amzn2.id
   instance_type = "t2.micro"
   key_name = "tf-key-pair"
   vpc_security_group_ids = [aws_security_group.allow_web.id] // 위에꺼 참조
+  availability_zone = "ap-northeast-2c"
+  subnet_id = var.subnet_id[1]
+  user_data = file("./init-script.sh")
 
   root_block_device {
     volume_size = 30
   }
 
   tags = {
-    Name = "web"
+    Name = "web-2a"
+  }
+}
+
+resource "aws_instance" "web-2c" {
+  ami           = data.aws_ami.amzn2.id
+  instance_type = "t2.micro"
+  key_name = "tf-key-pair"
+  vpc_security_group_ids = [aws_security_group.allow_web.id] // 위에꺼 참조
+  availability_zone = "ap-northeast-2c"
+  subnet_id = var.subnet_id[1]
+  user_data = file("./init-script.sh")
+
+  root_block_device {
+    volume_size = 30
+  }
+
+  tags = {
+    Name = "web-2c"
   }
 }
