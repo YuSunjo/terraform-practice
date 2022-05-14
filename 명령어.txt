@@ -1,0 +1,13 @@
+df -h
+lsblk
+sudo growpart /dev/xvda 1
+sudo xfs_growfs -d /
+
+sudo ln -s /usr/bin/terraform /usr/bin/tf   => tefform 을 tf로 축약
+
+
+tf init
+tf plan
+tf apply
+
+tf apply -auto-approve => 자동yes
