@@ -1,3 +1,6 @@
+참고 사이트
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+
 df -h
 lsblk
 sudo growpart /dev/xvda 1
