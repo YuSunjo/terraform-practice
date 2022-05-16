@@ -53,3 +53,34 @@ resource "aws_subnet" "subnet-pri2-10-0-4-0" {
     Name = "subnet-pub1-10-0-4-0"
   }
 }
+
+resource "aws_internet_gateway" "igw-vpc-10-0-0-0" {
+  vpc_id = aws_vpc.vpc_10-0-0-0.id
+
+  tags = {
+    Name = "igw-vpc-10-0-0-0"
+  }
+}
+
+resource "aws_route_table" "rt-pub-vpc-10-0-0-0" {
+  vpc_id = aws_vpc.vpc_10-0-0-0.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw-vpc-10-0-0-0
+  }
+
+  tags = {
+    Name = "rt-pub-vpc-10-0-0-0"
+  }
+}
+
+resource "aws_route_table_association" "rt-pub-as1-vpc-10-0-0-0" {
+  subnet_id      = aws_subnet.subnet-pub1-10-0-1-0
+  route_table_id = aws_route_table.rt-pub-vpc-10-0-0-0
+}
+
+resource "aws_route_table_association" "rt-pub-as2-vpc-10-0-0-0" {
+  subnet_id      = aws_subnet.subnet-pub2-10-0-2-0
+  route_table_id = aws_route_table.rt-pub-vpc-10-0-0-0
+}
